@@ -2,7 +2,7 @@ import groovy.json.JsonOutput
 import groovy.transform.Field
 import groovy.json.JsonSlurper
 
-node ('Build-Nginix') 
+node ('jenkin_slv') 
 {
    parameters {
            choice(choices: 'dev\nsyst\nmaster', description: 'Enter Branch Name' , name: 'Branch_Name')    
@@ -21,7 +21,7 @@ def Checkout()
        stage ('Checkout') 
           {
            
-             node ('Build-Nginix') {
+             node ('jenkin_slv') {
                checkout scm
                                    }
                  
@@ -33,9 +33,9 @@ def NginxDeployment() {
         stage ('NginxDeployment')
         {
            
-              node ('Build-Nginix')
+              node ('jenkin_slv')
                    {
-                sh 'sudo cp /home/ubuntu/workspace/MyPipelinejob2/* /var/www/html/ '             
+                sh 'sudo cp /home/ubuntu/workspace/jenkins_pipeline/* /var/www/html/ '             
                    }
                   
         }
