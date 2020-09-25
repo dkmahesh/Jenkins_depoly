@@ -1,42 +1,25 @@
-import groovy.json.JsonOutput
-import groovy.transform.Field
-import groovy.json.JsonSlurper
-
-node ('jenkin_slv') 
-{
-   parameters {
-           choice(choices: 'dev\nsyst\nmaster', description: 'Enter Branch Name' , name: 'Branch_Name')    
-    }
-
-   if ("${Branch_Name}" == 'dev')  
-          {
-            Checkout()   //  checkout
-            NginxDeployment() //  deployment
-          }
-} 
-
-def Checkout()   
-{ 
- 
-       stage ('Checkout') 
-          {
-           
-             node ('jenkin_slv') {
+pipeline {
+   agent {
+     label 'jenkin-slv120'
+     }
+     }
+     stages {
+       stage ('Checkout') {
+           steps {
+             node ('jenkin-slv120') {
                checkout scm
-                                   }
-                 
-          }
-  
-}
-             
-def NginxDeployment() {       
-        stage ('NginxDeployment')
-        {
-           
-              node ('jenkin_slv')
-                   {
-                sh 'sudo cp /home/ubuntu/workspace/jenkins_pipeline/* /var/www/html/ '             
-                   }
-                  
+             }
+            }
+       
+       }      
+        stage ('NginxDeployment'){
+           steps {
+              node ('jenkin-slv120'){
+                sh 'sudo cp /home/ubuntu/workspace/Project-gitPipeline/* /var/www/devops/ '
+              }
+           }
         }
-    }
+     }
+     
+              
+       
